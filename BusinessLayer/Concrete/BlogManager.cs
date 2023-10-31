@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrete
 {
-	public class BlogManager : IBlogService
+    public class BlogManager : IBlogService
 	{
 		IBlogDal _blogdal;
 
@@ -17,20 +17,9 @@ namespace BusinessLayer.Concrete
 		{
 			_blogdal = blogdal;
 		}
-
-		public void BlogAdd(Blog blog)
+		public List<Blog> GetListWithCAtegoryByWriterBm(int id ) 
 		{
-			throw new NotImplementedException();
-		}
-
-		public void BlogDelete(Blog blog)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void BlogUpdate(Blog blog)
-		{
-			throw new NotImplementedException();
+			return _blogdal.GetListWithCategoryByWriter(id);
 		}
 
 		public List<Blog> GetBlogListWithCategory()
@@ -40,8 +29,8 @@ namespace BusinessLayer.Concrete
 
 		public Blog GetById(int id)
 		{
-			throw new NotImplementedException();
-		}
+            return _blogdal.GetByID(id);
+        }
 		public List<Blog> GetBlogByID(int id)
 		{
 			return _blogdal.GetListAll(x=>x.BlogID == id);	
@@ -51,10 +40,29 @@ namespace BusinessLayer.Concrete
 		{
 			return _blogdal.GetListAll();
 		}
+		public List<Blog> GetLast3Blog()
+		{
+			return _blogdal.GetListAll().Take(3).ToList();
+		}
 
 		public List<Blog> GetBlogListByWriter(int id)
 		{
 			return _blogdal.GetListAll(x => x.WriterID == id);
 		}
-	}
+
+        public void TAdd(Blog t)
+        {
+            _blogdal.Insert(t);
+        }
+
+        public void TDelete(Blog t)
+        {
+            _blogdal.Delete(t);
+        }
+
+        public void TUpdate(Blog t)
+        {
+            _blogdal.Update(t); ;
+        }
+    }
 }
