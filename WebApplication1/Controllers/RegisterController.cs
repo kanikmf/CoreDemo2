@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
 			{
 				writer.WriterStatus = true;
 				writer.WriterAbout = "Deneme Test";
-				wm.WriterAddd(writer);
+				wm.TAdd(writer);
 				return RedirectToAction("Index", "Blog");
 			}
 			else
