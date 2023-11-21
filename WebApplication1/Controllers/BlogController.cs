@@ -16,12 +16,13 @@ namespace WebApplication1.Controllers
         BlogManager bm = new BlogManager(new EfBlogRepository());
         CategoryManager cm = new CategoryManager(new EfCategoryRepository());
         Context c = new Context();
-      
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var values = bm.GetBlogListWithCategory();
             return View(values);
         }
+        [AllowAnonymous]
         public IActionResult BlogReadAll(int id)
         {
             ViewBag.i=id;
@@ -30,7 +31,8 @@ namespace WebApplication1.Controllers
         }
         public IActionResult BlogListWriter()
         {
-            var usermail = User.Identity.Name;
+            var username = User.Identity.Name;
+            var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
             var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             var values = bm.GetListWithCAtegoryByWriterBm(writerID);
             return View(values);
@@ -50,7 +52,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult BlogAdd(Blog p)
         {
-            var usermail = User.Identity.Name;
+            var username = User.Identity.Name;
+            var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
             var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
 
             BlogValidator bv = new BlogValidator();
@@ -89,7 +92,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult EditBlog(Blog p)
         {
-            var usermail = User.Identity.Name;
+            var username = User.Identity.Name;
+            var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
             var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             p.WriterID = writerID;
             p.BlogStatus= true;
